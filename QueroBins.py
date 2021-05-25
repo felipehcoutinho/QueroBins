@@ -32,8 +32,7 @@ parser.add_argument("--make_bins", help="Flag to run the binning module", defaul
 parser.add_argument("--binning_method", help="Binning method to use", default='metabat', type=str)
 parser.add_argument("--metabat_preset", help="Metabat binning preset to use", default='metabat', type=str)
 parser.add_argument("--call_checkm", help="Flag to run CheckM", default=False, type=bool)
-parser.add_argument("--samples_dir", help="Directory containing fastq files to be used for assembly", nargs="+", type=str)
-parser.add_argument("--samples_extension", help="Extension of the fastq files in samples_dir", default='fastq', type=str)
+parser.add_argument("--call_GTDBtk", help="Flag to run GTDBtk", default=False, type=bool)
 parser.add_argument("--threads", help="The number of threads to be used", default=1, type=int)
 parser.add_argument("--parse_only", help="Flag to skip running any programs and only parse their output", default=False, type=bool)
 args = parser.parse_args()
@@ -65,10 +64,17 @@ def central():
     info_dataframe.to_csv(args.bin_info_table,sep="\t",na_rep='NA')
 
 def checkm_module(bin_info = defaultdict(dict)):
-    command = f"checkm lineage_wf --threads {args.threads} --pplacer_threads {args.threads} --extension fa . CheckM_Results"
+    command = f"checkm lineage_wf --tab_table --file CheckM_Bin_Info.tsv --threads {args.threads} --pplacer_threads {args.threads} --extension fa . CheckM_Results"
     if (args.parse_only == False):
-         print(f"Running: {command}")
+        print(f"Running: {command}")
         subprocess.call(command, shell=True)
+    checkm_df =  pd.read_csv("CheckM_Bin_Info.tsv", sep="\t",index_col=0,header=0)
+    for i,row in checkm_df.iterrows():
+        bin_info['Marker_Lineage'][i] = row['Marker lineage']
+        bin_info['Completeness'][i] = row['Completeness']
+        bin_info['Contamination'][i] = row['Contamination']
+        bin_info['Strain_Heterogeneity'][i] = row['Strain heterogeneity']
+    return(bin_info)
 
 def annotation_module(assemblies_list = [], seq_info = defaultdict(dict)):
     for assembly_file in assemblies_list:
