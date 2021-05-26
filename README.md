@@ -30,8 +30,8 @@ This command will simply filter out scaffolds shorter than the user defined valu
 
 `python3 QueroBins.py --assemblies Filtered_Renamed_Assembly_1.fasta Filtered_Renamed_Assembly_2.fasta Filtered_Renamed_Assembly_3.fasta... --make_bins True --binning_method metabat --threads 24`
 
-### Taxonomy aware binning with CAT and MetaBat2
+### Taxonomy aware binning with CAT and MetaBat2 at the level of phylum
 
-`python3 QueroBins.py --assemblies Filtered_Renamed_Assembly_1.fasta Filtered_Renamed_Assembly_2.fasta Filtered_Renamed_Assembly_3.fasta... --make_bins True  --tax_aware_binning True --binning_method metabat --threads 24`
+`python3 QueroBins.py --assemblies Filtered_Renamed_Assembly_1.fasta Filtered_Renamed_Assembly_2.fasta Filtered_Renamed_Assembly_3.fasta... --make_bins True  --tax_aware_binning True --tax_level phylum --binning_method metabat --threads 24`
 
 The command above will frist classify contigs taxonomically with CAT, split the assemblies according to contig assigned phylum and perform the binning individiaully on the split files
