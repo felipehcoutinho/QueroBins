@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="https://github.com/felipehcoutinho/QueroBins/blob/main/querobins_logo.png" width="400" height="400" alt="QueroBins logo generated with Craiyon"/>
+</p>
+
 # QueroBins
 Automated Analysis of Metagenome Assembled Genomes of Bacteria and Archaea
 
